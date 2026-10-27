@@ -1,4 +1,4 @@
-# Latihan 8 — PHP View dan Input Database
+﻿# Latihan 8 â€” PHP View dan Input Database
 
 Aplikasi ini menampilkan data kecamatan dari MySQL dan menyediakan formulir untuk menambahkan data, termasuk longitude dan latitude.
 
@@ -13,3 +13,4 @@ Aplikasi ini menampilkan data kecamatan dari MySQL dan menyediakan formulir untu
 ## Validasi
 
 Form memeriksa nama kecamatan, longitude (-180 sampai 180), latitude (-90 sampai 90), luas lebih besar dari nol, serta jumlah penduduk berupa bilangan bulat minimal nol. Pemeriksaan yang sama dilakukan kembali di server sebelum data disimpan.
+
