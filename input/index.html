@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Input Data Kecamatan</title>
+    <style>
+        :root { font-family: system-ui, sans-serif; color: #172033; background: #f3f6fb; }
+        body { max-width: 680px; margin: 0 auto; padding: 32px 20px; }
+        .card { background: white; border: 1px solid #dce3ee; border-radius: 14px; padding: 24px; }
+        h1 { margin: 0 0 8px; }
+        p { color: #526078; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .wide { grid-column: 1 / -1; }
+        label { font-weight: 600; }
+        input { box-sizing: border-box; width: 100%; border: 1px solid #b9c5d7; border-radius: 7px; padding: 10px 11px; font: inherit; }
+        input:focus { outline: 3px solid #d8e4ff; border-color: #2459d3; }
+        .actions { display: flex; gap: 12px; align-items: center; margin-top: 22px; }
+        button, .back { border: 0; border-radius: 8px; padding: 10px 16px; font: inherit; text-decoration: none; }
+        button { color: white; background: #2459d3; font-weight: 650; cursor: pointer; }
+        .back { color: #34415a; background: #edf2fa; }
+        #informasi { min-height: 1.5em; color: #a32222; }
+        @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .wide { grid-column: auto; } }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <h1>Form Input Penduduk</h1>
+        <p>Masukkan informasi kecamatan, koordinat, luas, dan jumlah penduduk.</p>
+        <form action="input.php" method="post" id="form-input" novalidate>
+            <div class="grid">
+                <div class="field wide">
+                    <label for="kecamatan">Kecamatan</label>
+                    <input type="text" id="kecamatan" name="kecamatan" maxlength="100" required>
+                </div>
+                <div class="field">
+                    <label for="longitude">Longitude</label>
+                    <input type="number" id="longitude" name="longitude" min="-180" max="180" step="any" required>
+                </div>
+                <div class="field">
+                    <label for="latitude">Latitude</label>
+                    <input type="number" id="latitude" name="latitude" min="-90" max="90" step="any" required>
+                </div>
+                <div class="field">
+                    <label for="luas">Luas (km²)</label>
+                    <input type="number" id="luas" name="luas" min="0.01" step="any" required>
+                </div>
+                <div class="field">
+                    <label for="jumlah_penduduk">Jumlah penduduk</label>
+                    <input type="number" id="jumlah_penduduk" name="jumlah_penduduk" min="0" step="1" required>
+                </div>
+            </div>
+            <p id="informasi" role="alert" aria-live="polite"></p>
+            <div class="actions">
+                <button type="submit">Simpan data</button>
+                <a class="back" href="../index.php">Kembali ke daftar</a>
+            </div>
+        </form>
+    </main>
+    <script>
+        document.getElementById('form-input').addEventListener('submit', function (event) {
+            const form = event.currentTarget;
+            const kecamatan = form.elements.kecamatan.value.trim();
+            const longitude = Number(form.elements.longitude.value);
+            const latitude = Number(form.elements.latitude.value);
+            const luas = Number(form.elements.luas.value);
+            const jumlah = Number(form.elements.jumlah_penduduk.value);
+            let pesan = '';
+
+            if (!kecamatan) pesan = 'Nama kecamatan wajib diisi.';
+            else if (form.elements.longitude.value === '' || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) pesan = 'Longitude harus berupa angka antara -180 dan 180.';
+            else if (form.elements.latitude.value === '' || !Number.isFinite(latitude) || latitude < -90 || latitude > 90) pesan = 'Latitude harus berupa angka antara -90 dan 90.';
+            else if (form.elements.luas.value === '' || !Number.isFinite(luas) || luas <= 0) pesan = 'Luas harus berupa angka lebih besar dari 0.';
+            else if (form.elements.jumlah_penduduk.value === '' || !Number.isSafeInteger(jumlah) || jumlah < 0) pesan = 'Jumlah penduduk harus berupa bilangan bulat minimal 0.';
+
+            document.getElementById('informasi').textContent = pesan;
+            if (pesan) event.preventDefault();
+        });
+    </script>
+</body>
+</html>
